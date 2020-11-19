@@ -5,3 +5,5 @@ Things the app can do now...
 1. Able to authenticate user on Spotify using OAuth
 2. Able to get user's liked songs on Spotify 
 3. Able to create a new playlist on Spotify
+4. Able to get list of song URLs from a Youtube playlist URL
+5. Able to get track names and artist name for all of the songs from the Youtube playlist. This is used to search for a song on Spotify.
