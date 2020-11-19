@@ -20,6 +20,8 @@ class Create_Playlist:
             )
         )
         self.song_dict = {}
+        self.spotify_uri_list = []
+        self.spotify_playlist_id = None
 
     def get_user_saved_tracks_from_spotify(self):
         results = self.spotify_client.current_user_saved_tracks()
@@ -28,13 +30,14 @@ class Create_Playlist:
             print(idx, track["artists"][0]["name"], " – ", track["name"])
 
     def create_new_spotify_playlist(self):
-        self.spotify_client.user_playlist_create(
+        created_playlist = self.spotify_client.user_playlist_create(
             "subhaac",
             "Songs from Youtube",
             public=True,
             collaborative=False,
             description="Songs transferred from Youtube playlist",
         )
+        self.spotify_playlist_id = created_playlist["id"]
 
     def get_youtube_songs(self):
         for song in self.youtube_playlist.video_urls:
@@ -71,8 +74,13 @@ class Create_Playlist:
             results = self.spotify_client.search(
                 q=str(song + " " + self.song_dict[song]), limit=1
             )
-            # print(results["tracks"]["items"])
-            # print()
             for idx, track in enumerate(results["tracks"]["items"]):
-                print(idx, track["name"])
-                print(results["tracks"]["items"][0]["uri"])
+                self.spotify_uri_list.append(results["tracks"]["items"][0]["uri"])
+        return self.spotify_uri_list
+
+    def add_songs_to_spotify_playlist(self):
+        self.spotify_client.user_playlist_add_tracks(
+            user=self.user_id,
+            playlist_id=self.spotify_playlist_id,
+            tracks=self.spotify_uri_list,
+        )
