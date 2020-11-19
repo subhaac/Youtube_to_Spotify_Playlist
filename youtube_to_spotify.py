@@ -23,19 +23,13 @@ class Create_Playlist:
         self.spotify_uri_list = []
         self.spotify_playlist_id = None
 
-    def get_user_saved_tracks_from_spotify(self):
-        results = self.spotify_client.current_user_saved_tracks()
-        for idx, item in enumerate(results["items"]):
-            track = item["track"]
-            print(idx, track["artists"][0]["name"], " – ", track["name"])
-
-    def create_new_spotify_playlist(self):
+    def create_new_spotify_playlist(self, playlist_name, playlist_description):
         created_playlist = self.spotify_client.user_playlist_create(
             "subhaac",
-            "Songs from Youtube",
+            playlist_name,
             public=True,
             collaborative=False,
-            description="Songs transferred from Youtube playlist",
+            description=playlist_description,
         )
         self.spotify_playlist_id = created_playlist["id"]
 
@@ -48,19 +42,15 @@ class Create_Playlist:
         return self.list_of_songs
 
     def get_youtube_artist_and_track(self):
-        for songs in range(0, 4):
+        for songs in self.list_of_songs:
             download = False
             ydl_opts = {
                 "outtmpl": "fileName",
-                "writesubtitles": True,
-                "format": "mp4",
                 "writethumbnail": True,
-                "ignoreerrors": True,
-                "skipdownload": True,
             }
 
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ie_result = ydl.extract_info(self.list_of_songs[songs], download)
+                ie_result = ydl.extract_info(songs, download)
 
             try:
                 self.song_dict[ie_result["track"]] = ie_result["artist"]
