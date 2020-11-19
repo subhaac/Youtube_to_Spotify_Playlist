@@ -10,3 +10,5 @@ new_playlist = YTS.Create_Playlist(
 new_playlist.get_youtube_songs()
 
 print(new_playlist.get_youtube_artist_and_track())
+
+new_playlist.find_spotify_song_url()

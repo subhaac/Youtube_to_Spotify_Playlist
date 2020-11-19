@@ -45,7 +45,7 @@ class Create_Playlist:
         return self.list_of_songs
 
     def get_youtube_artist_and_track(self):
-        for songs in self.list_of_songs:
+        for songs in range(0, 4):
             download = False
             ydl_opts = {
                 "outtmpl": "fileName",
@@ -57,7 +57,7 @@ class Create_Playlist:
             }
 
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ie_result = ydl.extract_info(songs, download)
+                ie_result = ydl.extract_info(self.list_of_songs[songs], download)
 
             try:
                 self.song_dict[ie_result["track"]] = ie_result["artist"]
@@ -65,3 +65,14 @@ class Create_Playlist:
                 print("Exception: ", e)
                 continue
         return self.song_dict
+
+    def find_spotify_song_url(self):
+        for song in self.song_dict:
+            results = self.spotify_client.search(
+                q=str(song + " " + self.song_dict[song]), limit=1
+            )
+            # print(results["tracks"]["items"])
+            # print()
+            for idx, track in enumerate(results["tracks"]["items"]):
+                print(idx, track["name"])
+                print(results["tracks"]["items"][0]["uri"])
