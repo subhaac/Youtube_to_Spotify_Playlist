@@ -12,4 +12,5 @@ Things the app can do now...
 
 
 NOTES:
+
 a) The Youtube playlist must be public
