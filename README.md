@@ -9,3 +9,7 @@ Things the app can do now...
 5. Able to get track names and artist name for all of the songs from the Youtube playlist. This is used to search for a song on Spotify.
 6. Able to get Spotify URI for all these tracks. 
 7. Able to add the songs to the created Spotify playlist using the URIs for the songs.
+
+
+NOTES:
+a) The Youtube playlist must be public
